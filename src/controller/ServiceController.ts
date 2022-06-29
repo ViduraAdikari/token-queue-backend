@@ -31,7 +31,7 @@ const getServices = (): IService[] => {
  * @param serviceID
  */
 const findServiceByID = (serviceID: string): IService | undefined => {
-  const services: IService[] = getServices();
+  const services: IService[] = getSharedData().services;
   return services.find((service: IService) => service.id === serviceID);
 }
 
@@ -40,7 +40,7 @@ const findServiceByID = (serviceID: string): IService | undefined => {
  * @param updatedService
  */
 const setServiceToDB = (updatedService: IService) => {
-  const services: IService[] = getServices().slice();
+  const services: IService[] = getSharedData().services.slice();
   const serviceIndex: number = services.findIndex((service: IService) => service.id === updatedService.id);
 
   if (serviceIndex < 0) {
@@ -48,6 +48,7 @@ const setServiceToDB = (updatedService: IService) => {
   }
 
   services.splice(serviceIndex, 1, updatedService);
+
   return setSharedServices(services);
 }
 

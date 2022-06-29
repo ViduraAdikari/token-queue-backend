@@ -1,6 +1,7 @@
 import {ICounter, IService, ISharedData, IToken} from "../types/types";
 import {findServiceByID, getSharedData, setServiceToDB} from "./ServiceController";
 import {RESPONSE_SUCCESS} from "../const/values";
+import {assignTokenFromQueue} from "./TokenController";
 
 /**
  * returns all counters
@@ -53,7 +54,7 @@ const setCounterToDB = (updatedCounter: ICounter) => {
 const removeAssignedToken = (serviceID: string, tokenNumber: number) => {
   const service: IService | undefined = findServiceByID(serviceID);
 
-  if (service || !service.assignedTokens) {
+  if (!service || !service.assignedTokens) {
     return;
   }
 
@@ -88,12 +89,14 @@ const setServedToken = (counterID: string, tokenNumber: number) => {
   counter.servingToken = null;
   response = setCounterToDB(counter);
 
+  assignTokenFromQueue(counter.serviceID);
+
   if (response === RESPONSE_SUCCESS) {
     return response;
   }
 
-  //transaction would be great.
+  //transaction would be great:)
   return null;
 }
 
-export {getCounters, setServedToken};
+export {getCounters, getCounterByID, setServedToken};
