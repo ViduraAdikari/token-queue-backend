@@ -28,7 +28,8 @@ const getNextTokenNumber = (): number => {
  * @param user
  */
 const addToken = (serviceID: string, time: number, user: IGuest): IToken | null => {
-  const service: IService | undefined = findServiceByID(serviceID);
+  let service: IService | undefined = findServiceByID(serviceID);
+  service = Object.assign({}, service);
 
   if (!service) {
     return null;
@@ -37,7 +38,7 @@ const addToken = (serviceID: string, time: number, user: IGuest): IToken | null 
   const tokenNumber: number = getNextTokenNumber();
   const newToken: IToken = {
     id: tokenNumber + '', tokenNumber: tokenNumber,
-    serviceID: serviceID, customer: user, time: new Date(time), served: false
+    serviceID: serviceID, customer: {...user, avatar: undefined}, time: new Date(time), served: false
   };
 
   const queue: Queue<IToken> = service.queue ? service.queue : new Queue<IToken>();
@@ -70,6 +71,10 @@ const getVacantCountersByService = (serviceID: string): ICounter[] => {
  */
 const assignTokenFromQueue = (serviceID: string): IToken[] | undefined => {
   const service: IService | undefined = findServiceByID(serviceID);
+  if (!service) {
+    return undefined;
+  }
+
   if (!service.queue || service.queue.isEmpty) {
     return service.assignedTokens;
   }
@@ -81,6 +86,7 @@ const assignTokenFromQueue = (serviceID: string): IToken[] | undefined => {
 
   const counterToAssignToken: ICounter = vacantCounters[Math.floor(Math.random() * vacantCounters.length)];
   counterToAssignToken.servingToken = service.queue.dequeue();
+  counterToAssignToken.servingToken.counterID = counterToAssignToken.id;
 
   service.assignedTokens = service.assignedTokens ? service.assignedTokens.concat([counterToAssignToken.servingToken]) :
     [counterToAssignToken.servingToken];
@@ -101,4 +107,4 @@ const getAssignedTokensByService = (serviceID: string) => {
   return assignedTokens;
 }
 
-export {addToken, getAssignedTokensByService};
+export {addToken, getAssignedTokensByService, assignTokenFromQueue};
