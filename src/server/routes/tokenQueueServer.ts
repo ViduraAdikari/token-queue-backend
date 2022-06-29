@@ -3,7 +3,7 @@ import * as sharedData from '../../db/sharedData';
 import {ICounter, IService, IToken} from "../../types/types";
 import {getServices} from "../../controller/ServiceController";
 import {addToken, getAssignedTokensByService} from "../../controller/TokenController";
-import {getCounters, setServedToken} from "../../controller/CounterController";
+import {getCounterByID, getCounters, setServedToken} from "../../controller/CounterController";
 import {RESPONSE_SUCCESS} from "../../const/values";
 
 const tokenRouter = Router();
@@ -14,7 +14,6 @@ global.sharedData = sharedData['default'];
 tokenRouter.get('/test', (req: Request, res: Response) => {
   res.status(200).send("API running");
 });
-
 
 //query services list
 tokenRouter.get('/services', (req: Request, res: Response) => {
@@ -48,6 +47,18 @@ tokenRouter.get('/tokens/:service', (req: Request, res: Response) => {
 tokenRouter.get('/counters', (req: Request, res: Response) => {
   const counters: ICounter[] = getCounters();
   res.status(200).json({'counters': counters});
+});
+
+//get counter by id
+tokenRouter.get('/:counter', (req: Request, res: Response) => {
+  const counterID = req.params['counter'];
+  const counter: ICounter | undefined = getCounterByID(counterID);
+
+  if (!counter) {
+    res.status(500).json({'message': 'counter not found!'});
+  }
+
+  res.status(200).json({'counter': counter});
 });
 
 //agent submits served token number.
