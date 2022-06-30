@@ -66,6 +66,22 @@ const getVacantCountersByService = (serviceID: string): ICounter[] => {
 }
 
 /**
+ * remove previous tokens assigned to the same counter.
+ * @param service
+ * @param servingToken
+ */
+const removePreviouslyAssignedTokenOfCounter = (service: IService, servingToken: IToken): IService => {
+  if (!service.assignedTokens) {
+    return service;
+  }
+
+  service.assignedTokens = service.assignedTokens.filter((token: IToken) =>
+    token.counterID !== servingToken.counterID);
+
+  return service;
+}
+
+/**
  * assigned tokens from queue to vacant counters.
  * @param serviceID
  */
@@ -88,6 +104,7 @@ const assignTokenFromQueue = (serviceID: string): IToken[] | undefined => {
   counterToAssignToken.servingToken = service.queue.dequeue();
   counterToAssignToken.servingToken.counterID = counterToAssignToken.id;
 
+  removePreviouslyAssignedTokenOfCounter(service, counterToAssignToken.servingToken);
   service.assignedTokens = service.assignedTokens ? service.assignedTokens.concat([counterToAssignToken.servingToken]) :
     [counterToAssignToken.servingToken];
   return service.assignedTokens;
