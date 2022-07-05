@@ -18,6 +18,11 @@ export const INIT_SERVICES: IService[] = [
   },
 ];
 
+/**
+ * 2 x Counters - Billing / Payments. (Counter 1 & 2)
+ * 4 x Counters - Document Services. (Counter 3, 4, 5, & 6)
+ * 1 x Counter - Consultation. (Counter 7 only)
+ */
 export const INIT_COUNTERS: ICounter[] = [
   {
     id: '1',
