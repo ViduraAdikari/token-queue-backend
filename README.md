@@ -14,7 +14,7 @@ If there is any trouble downloading the spec. try again or please contact me for
 2. Find the ReactJS frontend application here:.\
 https://github.com/ViduraAdikari/token-queue.git
 
-`Run npm install for both apps`
+Run `npm install` for both apps
 
 
 
@@ -27,9 +27,9 @@ As the backend starts, following data will be loaded to the global variables.
 3. Consultation
 
 #####7 Counters.
-- 2 x Counters - Billing / Payments.
-- 4 x Counters - Document Services.
-- 1 x Counter - Consultation.
+- 2 x Counters - Billing / Payments (Counter 1 & 2).
+- 4 x Counters - Document Services (Counter 3, 4, 5, & 6).
+- 1 x Counter - Consultation (Counter 7 only). 
 
 ## Functions
 Please check README.md of ReactJS frontend app for functions and instructions.

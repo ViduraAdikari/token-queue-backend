@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import 'dotenv/config';
 
 import config from './config';
 import tokenRouter from "./server/routes/tokenQueueServer";
