@@ -1,4 +1,4 @@
-import Queue from "src/types/Queue";
+import Queue from "../types/Queue";
 
 export type IconTypes = 'document' | 'payment' | 'meet';
 
